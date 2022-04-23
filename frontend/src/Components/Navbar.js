@@ -7,7 +7,8 @@ import {
   Stack,
   Input,
 } from "@mui/material";
-function navbar() {
+
+function navbar(props) {
   return (
     <AppBar variant="static" sx={{ backgroundColor: "white", color: "black" }}>
       <Toolbar>
@@ -16,7 +17,12 @@ function navbar() {
         </Typography>
         <Stack direction="row" spacing={2}>
           <Input placeholder="search" />
-          <Button variant="contained" color="success" size="small">
+          <Button
+            variant="contained"
+            color="success"
+            size="small"
+            onClick={props.addPhotos}
+          >
             Add a Photo
           </Button>
         </Stack>
