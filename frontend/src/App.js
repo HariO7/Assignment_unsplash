@@ -3,6 +3,7 @@ import Navbar from "./Components/Navbar";
 import axios from "axios";
 import { Container, LinearProgress } from "@mui/material";
 import Layout from "./Components/Layout";
+import PhotoForm from "./Components/PhotoForm";
 
 function App() {
   const [photos, setPhotos] = useState([1, 2, 3, 4, 5, 6, 7]);
@@ -22,10 +23,11 @@ function App() {
   };
   return (
     <Fragment>
-      <Container>
+      {/* <Container>
         <Navbar addPhotos={addPhotosHandler} />
         <Layout photos={photos} />
-      </Container>
+      </Container> */}
+      <PhotoForm />
     </Fragment>
   );
 }
