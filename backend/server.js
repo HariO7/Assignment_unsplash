@@ -9,24 +9,51 @@ const fs = require("fs");
 const port = process.env.PORT;
 
 const app = express();
-const upload = multer({ dest: "./uploads/" });
+// const upload = multer({ dest: "./uploads/" });
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("./uploads"));
+app.use("/static", express.static("uploads"));
 
-app.get("/", (req, res) => {
-  res.send("hello");
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "../frontend/public/uploads");
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.get("/photos", (req, res) => {
+  pool.query(`SELECT * FROM UNSPLASHTABLE`, [], (err, results) => {
+    if (err) throw err;
+    res.json(results.rows);
+  });
 });
 
 app.post("/photos", upload.single("photo"), (req, res) => {
-  let filename = req.file.filename;
-  let fileType = req.file.mimetype.split("/")[1];
-  let image = `${filename}.${fileType}`;
-  fs.rename(`./uploads/${filename}`, `./uploads/${image}`, () => {
-    console.log("created inmage");
-  });
-  res.send("200");
+  let id = Math.floor(Math.random() * 9000);
+  let label = req.file.originalname.slice(0, 10);
+  let image = req.file.originalname;
+  try {
+    pool.query(
+      `INSERT INTO UNSPLASHTABLE(id,label,image)
+     VALUES ($1,$2,$3)
+     RETURNING id`,
+      [id, label, image],
+      (err, results) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(results.rows);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.listen(port, () => {
