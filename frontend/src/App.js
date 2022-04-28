@@ -15,9 +15,11 @@ function App() {
     console.log(data);
     setPhotos(data);
   }, []);
+
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
+
   const addPhotosHandler = () => {
     setAdd(true);
   };

@@ -4,12 +4,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { pool } = require("./database/database.modal");
 const multer = require("multer");
-const fs = require("fs");
 
 const port = process.env.PORT;
 
 const app = express();
-// const upload = multer({ dest: "./uploads/" });
 
 app.use(cors());
 app.use(bodyParser.json());
